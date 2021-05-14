@@ -129,6 +129,8 @@ function findBusinessUnit(executionContext) {
 
 
     function findBusinessUnit(executionContext) {
+        formContext.getControl("new_jobtitle").setDisabled(false);
+        formContext.getControl("new_gender").setDisabled(false);
         var formContext = executionContext.getFormContext();
         var selectedGuidId = formContext.getAttribute("new_userid").getValue()[0].id;
         var userName = formContext.getAttribute("new_userid").getValue()[0].name;
@@ -162,7 +164,6 @@ function findBusinessUnit(executionContext) {
                     var userName = result[i].attributes['fullname'].value;
                     console.log("Maruti Showroom", userid, userName);
                     formContext.getControl("new_jobtitle").setDisabled(true);
-                    formContext.getAttribute("new_gender").setDisabled(false);
                 }
                 else if (UserBusinessUnit == "MarutiBeng") {
                     var id = result[i].attributes['systemuserid'].value;
@@ -170,7 +171,6 @@ function findBusinessUnit(executionContext) {
                     console.log("MarutiBeng user details ", id, Name);
 
                     formContext.getControl("new_gender").setDisabled(true);
-                    formContext.getAttribute("new_jobtitle").setDisabled(false);
                 }
             }
         }

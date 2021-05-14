@@ -1,0 +1,65 @@
+
+//only alphabets'new_lastname','new_city'
+function AlphabetsValidations(executionContext,logicalname1,logicalname2) {
+
+    var formContext = executionContext.getFormContext();
+
+    if (formContext.getAttribute(logicalname1).getValue() != null) {
+        var NameValue = formContext.getAttribute(logicalname1).getValue();
+        checkAlphabetsOnlyorNot(executionContext, NameValue, logicalname1, formContext);
+    }
+    if (formContext.getAttribute(logicalname2).getValue() != null) {
+        var cityValue = Xrm.Page.getAttribute(logicalname2).getValue();
+        checkAlphabetsOnlyorNot(executionContext, cityValue, logicalname2, formContext);
+    }
+   
+
+
+}
+function checkAlphabetsOnlyorNot(executionContext, fieldValue, fieldlogicalname, formContext) {
+
+    var regex = /^[a-zA-Z]*$/;
+    if (!regex.test(fieldValue)) {
+        Xrm.Utility.alertDialog("Please enter only alpha bets");
+        formContext.getAttribute(fieldlogicalname).setValue(null);
+        formContext.getControl(fieldlogicalname).setFocus();
+        executionContext.getEventArgs().preventDefault();
+
+    }
+}
+
+
+
+
+//new_adharcardno
+//Restricts user to enter only numbers to the specified field like debitcardnumber , phonenumber , adhar number , pin number.
+function AllowOnlyNumberORIntegers(executionContext,logicalname1) {
+
+    var formContext = executionContext.getFormContext();
+
+    var fieldvalue = formContext.getAttribute(logicalname1).getValue();
+
+    if (fieldvalue != null) {
+
+        AllowOnlyNumberValidation(executionContext, logicalname1, fieldvalue, formContext);
+    }
+
+}
+//Validation script
+function AllowOnlyNumberValidation(executionContext, fieldname, fieldvalue, formContext) {
+
+    if (fieldname != null) {
+
+        var isANumber = isNaN(fieldname) === false;
+
+        if (!isANumber) {
+
+            alert('This field must be numeric.');
+
+            formContext.getAttribute(fieldname).setValue(null);
+            formContext.getControl(fieldname).setFocus();
+            eContext.getEventArgs().preventDefault();
+
+        }
+    }
+}

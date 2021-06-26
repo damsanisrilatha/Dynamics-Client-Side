@@ -129,9 +129,10 @@ function findBusinessUnit(executionContext) {
 
 
     function findBusinessUnit(executionContext) {
+        
+        var formContext = executionContext.getFormContext();
         formContext.getControl("new_jobtitle").setDisabled(false);
         formContext.getControl("new_gender").setDisabled(false);
-        var formContext = executionContext.getFormContext();
         var selectedGuidId = formContext.getAttribute("new_userid").getValue()[0].id;
         var userName = formContext.getAttribute("new_userid").getValue()[0].name;
         var lookupDetails = "<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>" +
@@ -175,4 +176,90 @@ function findBusinessUnit(executionContext) {
             }
         }
 
-    }      
+    }
+
+
+
+
+    function abc() {
+
+        var userSettings = Xrm.Utility.getGlobalContext().userSettings;
+        var userID = userSettings.userId;
+        var userdetails = "<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>" +
+            "  <entity name='systemuser'>" +
+            "    <attribute name='fullname' />" +
+            "    <attribute name='businessunitid' />" +
+            "    <attribute name='title' />" +
+            "    <attribute name='address1_telephone1' />" +
+            "    <attribute name='positionid' />" +
+            "    <attribute name='systemuserid' />" +
+            "    <order attribute='fullname' descending='false' />" +
+            "    <filter type='and'>" +
+            "      <condition attribute='systemuserid' operator='eq'  uitype='systemuser' value='" + userID + "'/>" +
+            "    </filter>" +
+            "  </entity>" +
+            "</fetch>";
+        var fetch_Results = XrmServiceToolkit.Soap.Fetch(userdetails); // this function will take care about to fetch); // this function will take care about to fetch
+        if (fetch_Results.length > 0) {
+
+            //string or label
+            var businessunitID = fetch_Results[0].attributes['businessunitid'].id; // GUID
+
+            var bsinessunitName = fetch_Results[0].attributes['businessunitid'].name; // Lokkupname
+           
+            if (bsinessunitName == "Maruti Showroom")
+            {
+                formContext.getAttribute("new_gender").setDisabled(true);
+            }
+            alert(businessunitID);
+            alert(bsinessunitName);
+
+        }
+    }
+
+
+
+
+    //====================
+    //================        
+    function loginUserDetails(executionContext) {
+        var formContext = executionContext.getFormContext();
+        var userSettings = Xrm.Utility.getGlobalContext().userSettings;
+        var userID = userSettings.userId;
+        var username = userSettings.userName;
+        /*var entityname = formContext.data.entity.getEntityName();
+        console.log(entityname);
+        var formItem = formContext.ui.formSelector.getCurrentItem();
+        var formName = formItem.getLabel();
+        console.log(formName);
+        */
+        var userdetails = "<fetch version='1.0' output-format='xml-platform' mapping='logical' distinct='false'>" +
+            "  <entity name='systemuser'>" +
+            "    <attribute name='fullname' />" +
+            "    <attribute name='businessunitid' />" +
+            "    <attribute name='title' />" +
+            "    <attribute name='address1_telephone1' />" +
+            "    <attribute name='positionid' />" +
+            "    <attribute name='systemuserid' />" +
+            "    <order attribute='fullname' descending='false' />" +
+            "    <filter type='and'>" +
+            "      <condition attribute='systemuserid' operator='eq'  uitype='systemuser' value='" + userID + "'/>" +
+            "    </filter>" +
+            "  </entity>" +
+            "</fetch>";
+        var fetch_Results = XrmServiceToolkit.Soap.Fetch(userdetails); // this function will take care about to fetch); // this function will take care about to fetch
+        if (fetch_Results.length > 0) {
+
+            //string or label
+            var businessunitID = fetch_Results[0].attributes['businessunitid'].id; // GUID
+            var businessunitName = fetch_Results[0].attributes['businessunitid'].name; // Lokkupname
+            if (businessunitName == "org7c57cf96") {
+                formContext.getControl("new_gender").setDisabled(true);
+
+            }
+
+            alert(businessunitID);
+            alert(businessunitName);
+
+        }
+    }
